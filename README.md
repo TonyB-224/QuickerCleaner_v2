@@ -21,6 +21,11 @@
 
 ## 🚀 Quick Start
 
+### Prerequisites
+- **Windows 10/11**
+- **Python 3.8 or higher**
+- **Git** (for cloning)
+
 ### Run from Source
 ```bash
 # Clone the repository
@@ -35,6 +40,11 @@ python quickercleaner/gui.py
 
 # Run CLI version
 python quickercleaner/main.py --help
+
+# Alternative: Install and use as package
+pip install -e .
+quicker-cleaner-gui  # GUI version
+quicker-cleaner --help  # CLI version
 ```
 
 ### Download Executable
@@ -83,6 +93,37 @@ MIT License - see [LICENSE.txt](LICENSE.txt) for details.
 ## 🤝 Contributing
 
 We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+**Import Error: No module named 'send2trash'**
+```bash
+pip install send2trash
+```
+
+**Import Error: No module named 'win32com'**
+```bash
+pip install pywin32
+```
+
+**GUI won't start**
+- Ensure you're running on Windows
+- Check that tkinter is available: `python -c "import tkinter"`
+
+**Permission Denied errors**
+- Run as Administrator for system directories
+- Check that target directories are not in use
+
+### Demo Checklist
+
+Before running the demo:
+- [ ] Python 3.8+ installed
+- [ ] All dependencies installed: `pip install -r requirements.txt`
+- [ ] Running on Windows 10/11
+- [ ] Test GUI launch: `python quickercleaner/gui.py`
+- [ ] Test CLI help: `python quickercleaner/main.py --help`
 
 ## 📞 Support
 

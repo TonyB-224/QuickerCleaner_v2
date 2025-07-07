@@ -24,5 +24,8 @@ inquirer>=2.7.0  # For interactive CLI prompts
 # Enhanced drive detection (optional)
 pywin32>=228  # For better Windows API access and network drive detection
 
+# Windows COM automation (for recycle bin operations)
+pywin32>=228  # Includes win32com for Windows API access
+
 # Safety features
 send2trash>=1.8.0  # For moving files to recycle bin instead of permanent deletion 

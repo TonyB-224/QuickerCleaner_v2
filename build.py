@@ -29,6 +29,7 @@ def main():
         '--onefile',
         '--windowed',
         '--name=QuickerCleaner_Elite',
+        '--add-data=quickercleaner;quickercleaner',
         'quickercleaner/gui.py'
     ]
     

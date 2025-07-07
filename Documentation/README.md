@@ -53,6 +53,9 @@ quicker-cleaner --clean C: --dry-run
 
 # GUI mode
 quicker-cleaner-gui
+
+# Or run directly without installation
+python quickercleaner/gui.py
 ```
 
 ### Advanced Usage
