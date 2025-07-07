@@ -1,9 +1,16 @@
 import os
 import shutil
 import logging
+import sys
 from pathlib import Path
 from typing import List, Dict, Optional, Tuple
 from datetime import datetime, timedelta
+
+# Add parent directory to path when running directly
+if __name__ == "__main__":
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# Simple imports
 from quickercleaner.config import Config
 
 class CleanupResult:
@@ -20,7 +27,7 @@ class DiskCleaner:
         self.logger = logging.getLogger("QuickerCleaner")
         self.dry_run = self.config.dry_run
         self.min_age_days = 365
-        self.move_target = None
+        self.move_target: Optional[str] = None
         self.protected_paths = self.config.protected_paths
         self.cleanup_targets = self._default_cleanup_targets()
 

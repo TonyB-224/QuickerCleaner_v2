@@ -1,6 +1,13 @@
 import argparse
 import logging
 import sys
+import os
+
+# Add parent directory to path when running directly
+if __name__ == "__main__":
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# Simple imports
 from quickercleaner.cleaner import DiskCleaner
 from quickercleaner.config import Config
 
