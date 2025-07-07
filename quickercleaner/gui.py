@@ -290,6 +290,21 @@ class QuickerCleanerGUI:
         )
         self.clean_btn.pack(side=tk.LEFT, padx=(0, 10))
 
+        # Emergency Stop button (hidden by default)
+        self.emergency_stop_btn = tk.Button(
+            button_frame,
+            text="🛑 STOP",
+            font=("Segoe UI", 12, "bold"),
+            bg='#ff0000',
+            fg='white',
+            relief=tk.RAISED,
+            bd=3,
+            command=self.emergency_stop,
+            cursor='hand2',
+            width=12
+        )
+        # Don't pack yet - will be shown during cleanup
+
         # Settings button
         self.settings_btn = tk.Button(
             button_frame,
@@ -486,30 +501,72 @@ class QuickerCleanerGUI:
         self.output.see(tk.END)
 
     def clean_drive(self):
-        """Clean drive with confirmation"""
+        """Clean drive with enhanced safety confirmation"""
         if self.cleaning:
             return
 
         source = self.source_drive.get()
         destination = self.destination_drive.get()
 
-        # Confirmation dialog
+        # First, do a dry run to show what will be cleaned
+        self.output.insert(tk.END, f"[{datetime.now().strftime('%H:%M:%S')}] 🔍 Performing safety scan...\n")
+        self.output.see(tk.END)
+        
+        # Get cleanup preview
+        try:
+            preview_results = self.cleaner.scan_drive(source)
+            total_files = preview_results.get('total_files', 0)
+            total_size_mb = preview_results.get('total_size', 0) / (1024**2)
+        except Exception as e:
+            self.handle_error(f"Safety scan failed: {str(e)}")
+            return
+
+        # Enhanced confirmation dialog with file details
+        confirmation_text = f"""
+SAFETY CONFIRMATION - Cleanup Operation
+
+Source: {source}
+Destination: {destination}
+
+📊 CLEANUP SUMMARY:
+• Files to process: {total_files:,}
+• Space to free: {total_size_mb:.2f} MB
+• File age filter: {self.cleaner.min_age_days} days minimum
+
+🛡️ SAFETY FEATURES:
+• Files will be moved to Recycle Bin (recoverable)
+• Protected paths will never be touched
+• Double verification before deletion
+• Emergency stop available during cleanup
+
+⚠️ WARNING:
+This will clean temporary files, cache, and old logs.
+Make sure you have backed up any important data.
+
+Are you absolutely sure you want to proceed?
+        """
+        
         result = messagebox.askyesno(
-            "Confirm Cleanup",
-            f"Are you sure you want to clean {source}?\n\n"
-            "This will permanently delete temporary files and cache data.\n"
-            "Make sure you have backed up any important data.",
+            "SAFETY CONFIRMATION - Cleanup Operation",
+            confirmation_text,
             icon='warning'
         )
         
         if not result:
+            self.output.insert(tk.END, f"[{datetime.now().strftime('%H:%M:%S')}] ❌ Cleanup cancelled by user.\n")
+            self.output.see(tk.END)
             return
+
+        # Show emergency stop button
+        self.emergency_stop_btn.pack(side=tk.LEFT, padx=(0, 10))
+        self.emergency_stop_btn.config(state=tk.NORMAL)
 
         self.cleaning = True
         self.clean_btn.config(state=tk.DISABLED)
-        self.status_label.config(text=f"Cleaning {source}...")
+        self.status_label.config(text=f"Cleaning {source}... (Click STOP to cancel)")
         self.progress_var.set(0)
         self.output.insert(tk.END, f"[{datetime.now().strftime('%H:%M:%S')}] 🧹 Starting cleanup of {source}...\n")
+        self.output.insert(tk.END, f"[{datetime.now().strftime('%H:%M:%S')}] 🛡️ Emergency STOP button is now available.\n")
         self.output.see(tk.END)
 
         def clean_thread():
@@ -525,6 +582,19 @@ class QuickerCleanerGUI:
                 self.root.after(0, self.clean_complete)
 
         threading.Thread(target=clean_thread, daemon=True).start()
+
+    def emergency_stop(self):
+        """Emergency stop cleanup operation"""
+        if self.cleaning:
+            self.cleaning = False
+            self.emergency_stop_btn.config(state=tk.DISABLED)
+            self.emergency_stop_btn.pack_forget()  # Hide the button
+            self.clean_btn.config(state=tk.NORMAL)
+            self.status_label.config(text="Cleanup stopped by user")
+            self.output.insert(tk.END, f"[{datetime.now().strftime('%H:%M:%S')}] 🛑 EMERGENCY STOP - Cleanup operation cancelled!\n")
+            self.output.insert(tk.END, f"[{datetime.now().strftime('%H:%M:%S')}] ⚠️ Some files may have already been processed.\n")
+            self.output.see(tk.END)
+            messagebox.showwarning("Emergency Stop", "Cleanup operation has been stopped. Some files may have already been processed.")
 
     def update_clean_results(self, result):
         """Update cleanup results display"""
@@ -567,6 +637,7 @@ class QuickerCleanerGUI:
         """Handle cleanup completion"""
         self.cleaning = False
         self.clean_btn.config(state=tk.NORMAL)
+        self.emergency_stop_btn.pack_forget()  # Hide emergency stop button
         self.status_label.config(text="Cleanup completed")
         self.progress_var.set(100)
 
@@ -872,6 +943,7 @@ Built by Tony Technologies LLC
             self.output.insert(tk.END, f"👁️ DRY RUN - Files that would be cleaned:\n")
             self.output.insert(tk.END, f"{'='*60}\n")
             
+            # Show summary by category
             for category, data in results['categories'].items():
                 files = data.get('files', 0)
                 size_mb = data.get('size', 0) / (1024**2)
@@ -880,6 +952,32 @@ Built by Tony Technologies LLC
             self.output.insert(tk.END, f"\n🎯 Total files that would be processed: {total_files:,}\n")
             self.output.insert(tk.END, f"💾 Total space that would be freed: {total_size/(1024**2):.2f} MB\n")
             self.output.insert(tk.END, f"{'='*60}\n\n")
+            
+            # Show detailed file information
+            if 'file_details' in results and results['file_details']:
+                self.output.insert(tk.END, f"📋 DETAILED FILE LIST:\n")
+                self.output.insert(tk.END, f"{'='*60}\n")
+                
+                for category, file_list in results['file_details'].items():
+                    if file_list:
+                        self.output.insert(tk.END, f"\n📂 {category.replace('_', ' ').title()}:\n")
+                        for file_info in file_list[:10]:  # Show first 10 files per category
+                            path = file_info['path']
+                            size_kb = file_info['size'] / 1024
+                            age = file_info['age_days']
+                            self.output.insert(tk.END, f"   • {os.path.basename(path)} ({size_kb:.1f} KB, {age} days old)\n")
+                        
+                        if len(file_list) > 10:
+                            self.output.insert(tk.END, f"   ... and {len(file_list) - 10} more files\n")
+                
+                self.output.insert(tk.END, f"\n{'='*60}\n")
+            
+            # Safety information
+            self.output.insert(tk.END, f"🛡️ SAFETY FEATURES:\n")
+            self.output.insert(tk.END, f"• Files will be moved to Recycle Bin (not permanently deleted)\n")
+            self.output.insert(tk.END, f"• Only files older than {self.cleaner.min_age_days} days will be cleaned\n")
+            self.output.insert(tk.END, f"• Protected paths are never touched\n")
+            self.output.insert(tk.END, f"• Double verification before any deletion\n\n")
             
             if total_size > 0:
                 self.output.insert(tk.END, f"💡 Ready to clean {total_size/(1024**2):.2f} MB of unnecessary files!\n")
