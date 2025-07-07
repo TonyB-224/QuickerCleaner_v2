@@ -1,0 +1,1 @@
+# Tests package for QuickerCleaner Elite Edition 

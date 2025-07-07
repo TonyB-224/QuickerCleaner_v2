@@ -1,0 +1,5 @@
+__appname__ = "QuickerCleaner"
+__version__ = "2.0.0"
+__author__ = "Tony Technologies LLC"
+__email__ = "tbullard224@gmail.com"
+__license__ = "MIT"

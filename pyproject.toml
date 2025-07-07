@@ -1,0 +1,134 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "quicker-cleaner"
+version = "2.0.0"
+description = "The Fast, Safe, and Smart Windows Disk Cleanup Tool"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Tony Technologies LLC", email = "tbullard224@gmail.com"}
+]
+maintainers = [
+    {name = "Tony Technologies LLC", email = "tbullard224@gmail.com"}
+]
+keywords = ["disk-cleanup", "windows", "system-maintenance", "cleanup-tool"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: System Administrators",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Microsoft :: Windows :: Windows 10",
+    "Operating System :: Microsoft :: Windows :: Windows 11",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: System :: Systems Administration",
+    "Topic :: Utilities",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "psutil>=5.8.0",
+    "python-dotenv>=0.19.0",
+    "requests>=2.25.0",
+    "rich>=10.0.0",
+    "inquirer>=2.7.0",
+    "pywin32>=228",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0.0",
+    "pytest-cov>=2.10.0",
+    "black>=21.0.0",
+    "flake8>=3.8.0",
+    "mypy>=0.800",
+    "build>=0.10.0",
+    "wheel>=0.37.0",
+    "twine>=3.4.0",
+]
+
+[project.scripts]
+quicker-cleaner = "quickercleaner.main:main"
+quicker-cleaner-gui = "quickercleaner.gui:main"
+
+[project.urls]
+Homepage = "https://github.com/TonyB-224/QuickerCleaner"
+Documentation = "https://github.com/TonyB-224/QuickerCleaner#readme"
+Repository = "https://github.com/TonyB-224/QuickerCleaner.git"
+"Bug Tracker" = "https://github.com/TonyB-224/QuickerCleaner/issues"
+"Release Notes" = "https://github.com/TonyB-224/QuickerCleaner/releases"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["quickercleaner*"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203", "W503"]
+exclude = [
+    ".git",
+    "__pycache__",
+    "build",
+    "dist",
+    ".venv",
+    ".eggs",
+    "*.egg-info",
+]
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--cov=quickercleaner",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-report=xml",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+] 

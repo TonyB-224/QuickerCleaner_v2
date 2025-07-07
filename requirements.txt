@@ -1,0 +1,25 @@
+# Quick Cleaner Dependencies
+# Core dependencies
+psutil>=5.8.0
+python-dotenv>=0.19.0
+requests>=2.25.0
+
+# GUI dependencies (included with Python)
+# tkinter - included with Python standard library
+
+# Development dependencies (optional)
+pytest>=6.0.0
+pytest-cov>=2.10.0
+black>=21.0.0
+flake8>=3.8.0
+mypy>=0.800
+
+# Twitter API integration (optional)
+# tweepy>=4.0.0  # Uncomment when implementing full Twitter API
+
+# Additional utilities
+rich>=10.0.0  # For enhanced CLI output
+inquirer>=2.7.0  # For interactive CLI prompts
+
+# Enhanced drive detection (optional)
+pywin32>=228  # For better Windows API access and network drive detection 
