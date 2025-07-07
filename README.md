@@ -1,59 +1,94 @@
-# QuickerCleaner Elite Edition
+# 🧹 QuickerCleaner Elite Edition v2.0.0
 
-A powerful Windows disk cleanup tool with a beautiful GUI interface.
+**The Ultimate Windows Disk Cleanup Tool with Bulletproof Safety Features**
 
-## Features
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Windows](https://img.shields.io/badge/Windows-10%2F11-blue.svg)](https://www.microsoft.com/windows)
+[![Version](https://img.shields.io/badge/Version-2.0.0-green.svg)](https://github.com/TonyB-224/QuickerCleaner)
 
-- **Beautiful Dark Theme GUI** - Modern interface with disk info panel
-- **Smart Cleanup** - Removes temp files, browser cache, downloads, and more
-- **Safe Operations** - Only cleans safe locations, never system files
-- **Real-time Progress** - See cleanup progress with detailed output
-- **Disk Information** - View disk usage and available space
+**Professional-grade disk cleanup with enterprise-level safety features. Clean your Windows system with confidence.**
 
-## Quick Start
+## ✨ Elite Features
+
+- **🛡️ Bulletproof Safety** - Files moved to Recycle Bin, never permanently deleted
+- **👁️ Enhanced Dry Run** - See exactly what files will be affected before cleaning
+- **🛑 Emergency Stop** - Cancel cleanup operation at any time
+- **🎛️ Drive Selection** - Choose source and destination drives with file explorer
+- **⚙️ Configurable Settings** - Customize file age limits and protected paths
+- **📊 Real-time Progress** - Detailed output with file counts and sizes
+- **🎨 Beautiful Dark GUI** - Modern, professional interface
+
+## 🚀 Quick Start
 
 ### Run from Source
 ```bash
+# Clone the repository
+git clone https://github.com/TonyB-224/QuickerCleaner.git
+cd QuickerCleaner
+
 # Install dependencies
 pip install -r requirements.txt
 
-# Run GUI version
+# Run GUI version (recommended)
 python quickercleaner/gui.py
 
-# Run CLI version  
-python quickercleaner/main.py
+# Run CLI version
+python quickercleaner/main.py --help
 ```
 
-### Build Executable
+### Download Executable
+Download the latest release from [Releases](https://github.com/TonyB-224/QuickerCleaner/releases)
+
+### Build Your Own Executable
 ```bash
 # Build standalone executable
 python build.py
 ```
 
-The executable will be created as `dist/QuickerCleaner_Elite.exe`
+## 🛡️ Safety Features
 
-## What It Cleans
+- **Recycle Bin Backup** - All files moved to recycle bin (recoverable)
+- **Protected Paths** - Important folders never touched
+- **File Age Verification** - Only clean files older than specified age
+- **Double Confirmation** - Enhanced confirmation dialogs
+- **Emergency Stop** - Cancel operation mid-process
+- **Detailed Preview** - See exactly what will be cleaned
 
-- Windows Temp files
-- Browser cache (Chrome, Firefox, Edge)
-- Downloads folder (optional)
-- Recycle Bin
-- Windows Update cache
-- System logs
+## 📁 What Gets Cleaned
 
-## Safety
+- **Windows Temp Files** - System and user temporary files
+- **Browser Cache** - Chrome, Firefox, Edge cache data
+- **Downloads Folder** - Old downloaded files (optional)
+- **System Logs** - Old log files and error reports
+- **Update Cache** - Windows Update temporary files
 
-- Only cleans safe, non-system locations
-- Never touches important system files
-- Shows exactly what will be deleted before cleaning
-- Confirmation dialog before any cleanup
+## ⚙️ Configuration
 
-## Requirements
+Access settings through the GUI to customize:
+- **Minimum file age** (default: 365 days)
+- **Protected paths** (Documents, Desktop, etc.)
+- **Cleanup categories** (temp files, cache, logs)
 
-- Windows 10/11
-- Python 3.8+
-- Required packages in `requirements.txt`
+## 🔧 Requirements
 
-## License
+- **OS:** Windows 10/11
+- **Python:** 3.8 or higher
+- **Dependencies:** See `requirements.txt`
 
-MIT License - see LICENSE.txt for details.
+## 📄 License
+
+MIT License - see [LICENSE.txt](LICENSE.txt) for details.
+
+## 🤝 Contributing
+
+We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+## 📞 Support
+
+- **Issues:** [GitHub Issues](https://github.com/TonyB-224/QuickerCleaner/issues)
+- **Email:** tbullard224@gmail.com
+
+---
+
+**Built with ❤️ by Tony Technologies LLC**
