@@ -56,6 +56,23 @@ Download the latest release from [Releases](https://github.com/TonyB-224/Quicker
 python build.py
 ```
 
+## 🏃 Running as a Package
+
+You can also launch the GUI with:
+```bash
+python -m quickercleaner
+```
+
+## ⚠️ Import Errors? Read This!
+
+Always run scripts from the project root (where README.md is located). For example:
+```bash
+python quickercleaner/gui.py
+```
+**Do NOT run scripts from inside the quickercleaner folder.**
+
+If you see an import error, change to the project root and try again.
+
 ## 🛡️ Safety Features
 
 - **Recycle Bin Backup** - All files moved to recycle bin (recoverable)

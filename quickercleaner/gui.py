@@ -3,16 +3,31 @@ from tkinter import ttk, messagebox, scrolledtext, filedialog
 import threading
 import os
 import sys
-from datetime import datetime
+
+# Import datetime with fallback for exe builds
+try:
+    from datetime import datetime
+except ImportError:
+    # Fallback for exe builds
+    import datetime as dt
+    datetime = dt.datetime
+
 import psutil
 
-# Add parent directory to path when running directly
+# Ensure running from project root for relative imports
 if __name__ == "__main__":
-    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-# Simple imports
-from quickercleaner.cleaner import DiskCleaner
-from quickercleaner.config import Config
+    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    if project_root not in sys.path:
+        sys.path.insert(0, project_root)
+    try:
+        from quickercleaner.cleaner import DiskCleaner
+        from quickercleaner.config import Config
+    except ImportError as e:
+        print("[ERROR] Could not import QuickerCleaner modules. Please run this script from the project root directory (where README.md is located).\nDetails:", e)
+        sys.exit(1)
+else:
+    from quickercleaner.cleaner import DiskCleaner
+    from quickercleaner.config import Config
 
 class QuickerCleanerGUI:
     def __init__(self):

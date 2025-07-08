@@ -25,7 +25,7 @@ def main():
     
     # Build the executable
     cmd = [
-        'pyinstaller',
+        sys.executable, '-m', 'PyInstaller',
         '--onefile',
         '--windowed',
         '--name=QuickerCleaner_Elite',

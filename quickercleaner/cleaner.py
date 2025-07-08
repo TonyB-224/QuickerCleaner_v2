@@ -5,7 +5,15 @@ import sys
 import time
 from pathlib import Path
 from typing import List, Dict, Optional, Tuple
-from datetime import datetime, timedelta
+
+# Import datetime with fallback for exe builds
+try:
+    from datetime import datetime, timedelta
+except ImportError:
+    # Fallback for exe builds
+    import datetime as dt
+    datetime = dt.datetime
+    timedelta = dt.timedelta
 
 # Add parent directory to path when running directly
 if __name__ == "__main__":

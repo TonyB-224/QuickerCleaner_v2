@@ -3,13 +3,20 @@ import logging
 import sys
 import os
 
-# Add parent directory to path when running directly
+# Ensure running from project root for relative imports
 if __name__ == "__main__":
-    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-# Simple imports
-from quickercleaner.cleaner import DiskCleaner
-from quickercleaner.config import Config
+    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    if project_root not in sys.path:
+        sys.path.insert(0, project_root)
+    try:
+        from quickercleaner.cleaner import DiskCleaner
+        from quickercleaner.config import Config
+    except ImportError as e:
+        print("[ERROR] Could not import QuickerCleaner modules. Please run this script from the project root directory (where README.md is located).\nDetails:", e)
+        sys.exit(1)
+else:
+    from quickercleaner.cleaner import DiskCleaner
+    from quickercleaner.config import Config
 
 def main():
     parser = argparse.ArgumentParser(description="QuickerCleaner - Elite Windows Disk Cleanup Tool by Tony Technologies LLC")
